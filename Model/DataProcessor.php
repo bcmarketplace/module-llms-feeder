@@ -18,13 +18,13 @@ use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- * Data processor for LLMs generator
+ * Data processor for LLMs Feeder
  *
  * Optimized for performance with intelligent caching and memory-efficient data processing
  */
 class DataProcessor
 {
-    private const CACHE_TAG = 'llms_generator';
+    private const CACHE_TAG = 'llms_feeder';
     private const CACHE_LIFETIME = 3600; // 1 hour
     private const MAX_DESCRIPTION_LENGTH = 250;
     private const MAX_CMS_DESCRIPTION_LENGTH = 100;
@@ -150,7 +150,12 @@ class DataProcessor
         $cacheKey = "products_data_{$storeId}";
 
         return $this->getCachedData($cacheKey, function () use ($storeId): array {
-            return $this->loadProductsData($storeId);
+            $data = $this->loadProductsData($storeId);
+            $this->logger->info(
+                '[LLMsFeeder] Loaded products data',
+                ['store_id' => $storeId, 'count' => count($data)]
+            );
+            return $data;
         });
     }
 
@@ -166,7 +171,16 @@ class DataProcessor
         $storeId = $storeId ?? $this->getCurrentStoreId();
         $cacheKey = "company_data_{$storeId}";
 
-        return $this->loadCompanyData($storeId);
+        $data = $this->getCachedData($cacheKey, function () use ($storeId): array {
+            return $this->loadCompanyData($storeId);
+        });
+
+        $this->logger->info(
+            '[LLMsFeeder] Loaded company data',
+            ['store_id' => $storeId, 'urls_count' => count($data['urls'])]
+        );
+
+        return $data;
     }
 
     /**
@@ -251,7 +265,7 @@ class DataProcessor
 
             return $data;
         } catch (\Throwable $e) {
-            $this->logger->error('[LLMsGenerator] Failed to load products data', [
+            $this->logger->error('[LLMsFeeder] Failed to load products data', [
                 'store_id' => $storeId,
                 'error' => $e->getMessage()
             ]);
@@ -270,7 +284,7 @@ class DataProcessor
     {
         try {
             $description = $this->scopeConfig->getValue(
-                'atlanticbt_llmsgenerator/settings/site_description',
+                'bcmarketplace_llmsfeeder/settings/site_description',
                 ScopeInterface::SCOPE_STORE,
                 $storeId
             );
@@ -286,7 +300,7 @@ class DataProcessor
 
             return $data;
         } catch (\Throwable $e) {
-            $this->logger->error('[LLMsGenerator] Failed to load company data', [
+            $this->logger->error('[LLMsFeeder] Failed to load company data', [
                 'store_id' => $storeId,
                 'error' => $e->getMessage()
             ]);
@@ -341,7 +355,7 @@ class DataProcessor
 
             return $data;
         } catch (\Throwable $e) {
-            $this->logger->error('[LLMsGenerator] Failed to load categories data', [
+            $this->logger->error('[LLMsFeeder] Failed to load categories data', [
                 'store_id' => $storeId,
                 'error' => $e->getMessage()
             ]);
@@ -408,7 +422,7 @@ class DataProcessor
 
             return $data;
         } catch (\Throwable $e) {
-            $this->logger->error('[LLMsGenerator] Failed to load CMS pages data', [
+            $this->logger->error('[LLMsFeeder] Failed to load CMS pages data', [
                 'store_id' => $storeId,
                 'error' => $e->getMessage()
             ]);
@@ -446,7 +460,7 @@ class DataProcessor
 
             return $urls;
         } catch (\Throwable $e) {
-            $this->logger->error('[LLMsGenerator] Failed to load company page URLs', [
+            $this->logger->error('[LLMsFeeder] Failed to load company page URLs', [
                 'page_ids' => $pageIds,
                 'error' => $e->getMessage()
             ]);
@@ -473,7 +487,7 @@ class DataProcessor
                 try {
                     return $this->serializer->unserialize($cachedData);
                 } catch (\Throwable $e) {
-                    $this->logger->error('[LLMsGenerator] Failed to unserialize cached data', [
+                    $this->logger->error('[LLMsFeeder] Failed to unserialize cached data', [
                         'cache_key' => $cacheKey,
                         'error' => $e->getMessage()
                     ]);
@@ -486,7 +500,7 @@ class DataProcessor
                 $serializedData = $this->serializer->serialize($data);
                 $cache->save($serializedData, $cacheKey, [self::CACHE_TAG], self::CACHE_LIFETIME);
             } catch (\Throwable $e) {
-                $this->logger->error('[LLMsGenerator] Failed to cache data', [
+                $this->logger->error('[LLMsFeeder] Failed to cache data', [
                     'cache_key' => $cacheKey,
                     'error' => $e->getMessage()
                 ]);
@@ -518,7 +532,7 @@ class DataProcessor
     private function getCompanyInfoPageIds(int $storeId): array
     {
         $value = $this->scopeConfig->getValue(
-            'atlanticbt_llmsgenerator/settings/company_info_pages',
+            'bcmarketplace_llmsfeeder/settings/company_info_pages',
             ScopeInterface::SCOPE_STORE,
             $storeId
         );
@@ -569,7 +583,7 @@ class DataProcessor
             return $pageIds;
 
         } catch (\Throwable $e) {
-            $this->logger->error('[LLMsGenerator] Failed to resolve company page IDs from identifiers', [
+            $this->logger->error('[LLMsFeeder] Failed to resolve company page IDs from identifiers', [
                 'store_id' => $storeId,
                 'identifiers' => $validIdentifiers,
                 'error' => $e->getMessage()
@@ -644,7 +658,7 @@ class DataProcessor
     }
 
     /**
-     * Clear cache for all LLMs generator data
+     * Clear cache for all LLMs Feeder data
      *
      * @return void
      */
@@ -654,9 +668,10 @@ class DataProcessor
             $cache = $this->cacheFrontendPool->get('default');
             $cache->clean(\Zend_Cache::CLEANING_MODE_MATCHING_TAG, [self::CACHE_TAG]);
         } catch (\Throwable $e) {
-            $this->logger->error('[LLMsGenerator] Failed to clear cache', [
-                'error' => $e->getMessage()
-            ]);
+            $this->logger->error('[LLMsFeeder] Failed to clear cache', ['error' => $e->getMessage()]);
+            return;
         }
+
+        $this->logger->info('[LLMsFeeder] Cache cleared successfully');
     }
 }

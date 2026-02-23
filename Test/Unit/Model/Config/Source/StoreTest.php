@@ -8,16 +8,19 @@ use Magento\Store\Api\Data\StoreInterface;
 use Magento\Store\Model\StoreManagerInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 
 class StoreTest extends TestCase
 {
     private Store $storeSource;
     private StoreManagerInterface|MockObject $storeManagerMock;
+    private LoggerInterface|MockObject $loggerMock;
 
     protected function setUp(): void
     {
         $this->storeManagerMock = $this->createMock(StoreManagerInterface::class);
-        $this->storeSource = new Store($this->storeManagerMock);
+        $this->loggerMock = $this->createMock(LoggerInterface::class);
+        $this->storeSource = new Store($this->storeManagerMock, $this->loggerMock);
     }
 
     public function testToOptionArrayWithStores(): void

@@ -5,11 +5,4 @@
             <module name="BCMarketplace_LLMsFeeder" before="Magento_Cms"/>
         </route>
     </router>
-    
-    <!-- Direct route for llms.txt -->
-    <router id="standard">
-        <route id="llms_direct" frontName="llms.txt">
-            <module name="BCMarketplace_LLMsFeeder" before="Magento_Cms"/>
-        </route>
-    </router>
 </config>

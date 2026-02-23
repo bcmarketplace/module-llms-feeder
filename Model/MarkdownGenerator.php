@@ -113,7 +113,7 @@ class MarkdownGenerator
                     $store = $this->storeManager->getStore($storeId);
                     $stores[] = $store;
                 } catch (\Exception $e) {
-                    $this->logger->warning('[LLMsGenerator] Store not found: ' . $storeId, ['exception' => $e]);
+                    $this->logger->warning('[LLMsFeeder] Store not found: ' . $storeId, ['exception' => $e]);
                 }
             }
         } else {
@@ -123,7 +123,7 @@ class MarkdownGenerator
                 $selectedStore = $this->storeManager->getStore($selectedStoreId);
                 $stores = [$selectedStore];
             } catch (\Exception $e) {
-                $this->logger->error('[LLMsGenerator] Selected store not found: ' . $selectedStoreId, ['exception' => $e]);
+                $this->logger->error('[LLMsFeeder] Selected store not found: ' . $selectedStoreId, ['exception' => $e]);
                 return [];
             }
         }
@@ -170,7 +170,7 @@ class MarkdownGenerator
 
             } catch (LocalizedException $e) {
                 // Stop environment emulation
-                $this->logger->error('[LLMsGenerator] Error during processing of content', [
+                $this->logger->error('[LLMsFeeder] Error during processing of content', [
                     'store_id' => $storeId,
                     'store_code' => $storeCode,
                     'error' => $e->getMessage()

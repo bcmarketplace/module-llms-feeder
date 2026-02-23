@@ -32,7 +32,7 @@ class Generate
         try {
             $this->generator->execute();
         } catch (\Throwable $e) {
-            $this->logger->error('[LLMsGenerator] Cron execution failed: ' . $e->getMessage(), ['exception' => $e]);
+            $this->logger->error('[LLMsFeeder] Cron execution failed: ' . $e->getMessage(), ['exception' => $e]);
         }
     }
 }

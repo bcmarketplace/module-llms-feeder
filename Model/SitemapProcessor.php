@@ -51,7 +51,7 @@ class SitemapProcessor
 
             return $exists;
         } catch (\Throwable $e) {
-            $this->logger->warning('[LLMsGenerator] Sitemap check failed', [
+            $this->logger->warning('[LLMsFeeder] Sitemap check failed', [
                 'path' => $sitemapPath,
                 'error' => $e->getMessage()
             ]);
@@ -82,7 +82,7 @@ class SitemapProcessor
             $content = $directory->readFile($sitemapPath);
             return $this->parseSitemapContent($content, $store);
         } catch (\Throwable $e) {
-            $this->logger->error('[LLMsGenerator] Failed to parse sitemap', [
+            $this->logger->error('[LLMsFeeder] Failed to parse sitemap', [
                 'path' => $sitemapPath,
                 'error' => $e->getMessage()
             ]);
@@ -108,7 +108,7 @@ class SitemapProcessor
                 'sitemap_filename' => $sitemap->getSitemapFilename()
             ];
         } catch (\Throwable $e) {
-            $this->logger->error('[LLMsGenerator] Failed to load sitemap data', [
+            $this->logger->error('[LLMsFeeder] Failed to load sitemap data', [
                 'store_id' => $store->getId(),
                 'error' => $e->getMessage()
             ]);
@@ -182,7 +182,7 @@ class SitemapProcessor
                 }
             }
         } catch (\Throwable $e) {
-            $this->logger->warning('[LLMsGenerator] XML parsing failed', [
+            $this->logger->warning('[LLMsFeeder] XML parsing failed', [
                 'error' => $e->getMessage()
             ]);
         }

@@ -108,7 +108,7 @@ class RouterTest extends TestCase
         // Mock logger
         $this->logger->expects($this->once())
             ->method('info')
-            ->with('[LLMsGenerator] Router intercepted llms.txt request');
+            ->with('[LLMsFeeder] Router intercepted llms.txt request');
 
         // Execute
         $result = $this->router->match($this->request);
@@ -167,7 +167,7 @@ class RouterTest extends TestCase
         // Mock logger
         $this->logger->expects($this->once())
             ->method('info')
-            ->with('[LLMsGenerator] Router intercepted llms.txt request');
+            ->with('[LLMsFeeder] Router intercepted llms.txt request');
 
         // Execute
         $result = $this->router->match($this->request);
@@ -206,7 +206,7 @@ class RouterTest extends TestCase
         // Mock logger
         $this->logger->expects($this->once())
             ->method('info')
-            ->with('[LLMsGenerator] Router intercepted llms.txt request');
+            ->with('[LLMsFeeder] Router intercepted llms.txt request');
 
         // Execute
         $result = $this->router->match($this->request);

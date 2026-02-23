@@ -82,13 +82,13 @@ class Run extends Action implements HttpGetActionInterface
                 __('LLMs data generation has been successfully initiated for %1 store(s).', count($storeIds))
             );
         } catch (\RuntimeException $e) {
-            $this->logger->error('[LLMsGenerator] Manual generation failed with runtime exception', [
+            $this->logger->error('[LLMsFeeder] Manual generation failed with runtime exception', [
                 'error' => $e->getMessage()
             ]);
             $this->messageManager->addErrorMessage(__($e->getMessage()));
         } catch (\Throwable $e) {
             $this->logger->error(
-                '[LLMsGenerator] Manual generation failed: ' . $e->getMessage(),
+                '[LLMsFeeder] Manual generation failed: ' . $e->getMessage(),
                 ['exception' => $e]
             );
             $this->messageManager->addErrorMessage(
@@ -97,7 +97,7 @@ class Run extends Action implements HttpGetActionInterface
         }
 
         $resultRedirect = $this->resultRedirectFactory->create();
-        $resultRedirect->setPath('adminhtml/system_config/edit/section/atlanticbt_llmsgenerator');
+        $resultRedirect->setPath('adminhtml/system_config/edit/section/bcmarketplace_llmsfeeder');
         return $resultRedirect;
     }
 

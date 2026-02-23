@@ -33,7 +33,7 @@ use Psr\Log\LoggerInterface;
  * - No enforced trailing newline
  *
  * @covers \BCMarketplace\LLMsFeeder\Model\MarkdownGenerator
- * @package AtlanticBT\LLMsGenerator\Test\Unit\Model
+ * @package BCMarketplace\LLMsFeeder\Test\Unit\Model
  */
 class MarkdownGeneratorTest extends TestCase
 {
@@ -270,7 +270,7 @@ class MarkdownGeneratorTest extends TestCase
         $this->logger->expects($this->once())
             ->method('error')
             ->with(
-                '[LLMsGenerator] Error during processing of content',
+                '[LLMsFeeder] Error during processing of content',
                 ['store_id' => 1, 'store_code' => 'default', 'error' => 'Config error']
             );
 
@@ -484,7 +484,7 @@ class MarkdownGeneratorTest extends TestCase
         $this->logger->expects($this->once())
             ->method('warning')
             ->with(
-                '[LLMsGenerator] Store not found: 999',
+                '[LLMsFeeder] Store not found: 999',
                 $this->arrayHasKey('exception')
             );
 

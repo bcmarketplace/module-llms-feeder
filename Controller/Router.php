@@ -27,8 +27,7 @@ class Router implements RouterInterface
         $this->response = $response;
         $this->logger = $logger;
     }
-
-        /**
+    /**
      * Match request to our custom action
      *
      * @param RequestInterface $request
@@ -42,6 +41,7 @@ class Router implements RouterInterface
         
         // Check if this is an llms.txt request
         if ($identifier === 'llms.txt') {
+            $this->logger->info('[LLMsFeeder] Router intercepted llms.txt request');
             // Set the request parameters
             $request->setModuleName('llms')
                    ->setActionName('index')

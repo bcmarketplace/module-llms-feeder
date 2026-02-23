@@ -226,7 +226,7 @@ class DataProcessorTest extends TestCase
         $this->logger->expects($this->once())
             ->method('info')
             ->with(
-                '[LLMsGenerator] Loaded products data',
+                '[LLMsFeeder] Loaded products data',
                 ['store_id' => 1, 'count' => 1]
             );
 
@@ -247,7 +247,7 @@ class DataProcessorTest extends TestCase
         $this->logger->expects($this->atLeastOnce())
             ->method('error')
             ->with(
-                $this->stringContains('[LLMsGenerator] Failed to load products data'),
+                $this->stringContains('[LLMsFeeder] Failed to load products data'),
                 $this->arrayHasKey('store_id')
             );
 
@@ -265,8 +265,8 @@ class DataProcessorTest extends TestCase
 
         $this->scopeConfig->method('getValue')
             ->willReturnMap([
-                ['atlanticbt_llmsgenerator/settings/site_description', ScopeInterface::SCOPE_STORE, 1, 'Test Company Description'],
-                ['atlanticbt_llmsgenerator/settings/company_info_pages', ScopeInterface::SCOPE_STORE, 1, '']
+                ['bcmarketplace_llmsfeeder/settings/site_description', ScopeInterface::SCOPE_STORE, 1, 'Test Company Description'],
+                ['bcmarketplace_llmsfeeder/settings/company_info_pages', ScopeInterface::SCOPE_STORE, 1, '']
             ]);
 
         $this->serializer->method('serialize')
@@ -277,7 +277,7 @@ class DataProcessorTest extends TestCase
         $this->logger->expects($this->once())
             ->method('info')
             ->with(
-                '[LLMsGenerator] Loaded company data',
+                '[LLMsFeeder] Loaded company data',
                 ['store_id' => 1, 'urls_count' => 0]
             );
 
@@ -299,8 +299,8 @@ class DataProcessorTest extends TestCase
 
         $this->scopeConfig->method('getValue')
             ->willReturnMap([
-                ['atlanticbt_llmsgenerator/settings/site_description', ScopeInterface::SCOPE_STORE, 1, 'Test Company Description'],
-                ['atlanticbt_llmsgenerator/settings/company_info_pages', ScopeInterface::SCOPE_STORE, 1, '1,2']
+                ['bcmarketplace_llmsfeeder/settings/site_description', ScopeInterface::SCOPE_STORE, 1, 'Test Company Description'],
+                ['bcmarketplace_llmsfeeder/settings/company_info_pages', ScopeInterface::SCOPE_STORE, 1, '1,2']
             ]);
 
         $pageCollection = $this->createMock(PageCollection::class);
@@ -411,7 +411,7 @@ class DataProcessorTest extends TestCase
             ->willReturn(false);
 
         $this->scopeConfig->method('getValue')
-            ->with('atlanticbt_llmsgenerator/settings/company_info_pages', ScopeInterface::SCOPE_STORE, 1)
+            ->with('bcmarketplace_llmsfeeder/settings/company_info_pages', ScopeInterface::SCOPE_STORE, 1)
             ->willReturn('1,2');
 
         $pageCollection = $this->createMock(PageCollection::class);
@@ -456,7 +456,7 @@ class DataProcessorTest extends TestCase
             ->willReturn(false);
 
         $this->scopeConfig->method('getValue')
-            ->with('atlanticbt_llmsgenerator/settings/company_info_pages', ScopeInterface::SCOPE_STORE, 1)
+            ->with('bcmarketplace_llmsfeeder/settings/company_info_pages', ScopeInterface::SCOPE_STORE, 1)
             ->willReturn('about-us,contact-us');
 
         // Mock the company page IDs resolution (first call to pageCollectionFactory)
@@ -552,7 +552,7 @@ class DataProcessorTest extends TestCase
             ->willReturn(false);
 
         $this->scopeConfig->method('getValue')
-            ->with('atlanticbt_llmsgenerator/settings/company_info_pages', ScopeInterface::SCOPE_STORE, 1)
+            ->with('bcmarketplace_llmsfeeder/settings/company_info_pages', ScopeInterface::SCOPE_STORE, 1)
             ->willReturn('');
 
         $pageCollection = $this->createMock(PageCollection::class);
@@ -600,7 +600,7 @@ class DataProcessorTest extends TestCase
     public function testGetCompanyInfoPageIdsWithValidIds(): void
     {
         $this->scopeConfig->method('getValue')
-            ->with('atlanticbt_llmsgenerator/settings/company_info_pages', ScopeInterface::SCOPE_STORE, 1)
+            ->with('bcmarketplace_llmsfeeder/settings/company_info_pages', ScopeInterface::SCOPE_STORE, 1)
             ->willReturn('about-us,contact-us,privacy-policy');
 
         $pageCollection = $this->createMock(PageCollection::class);
@@ -635,7 +635,7 @@ class DataProcessorTest extends TestCase
     public function testGetCompanyInfoPageIdsWithInvalidIds(): void
     {
         $this->scopeConfig->method('getValue')
-            ->with('atlanticbt_llmsgenerator/settings/company_info_pages', ScopeInterface::SCOPE_STORE, 1)
+            ->with('bcmarketplace_llmsfeeder/settings/company_info_pages', ScopeInterface::SCOPE_STORE, 1)
             ->willReturn('about-us,,contact-us,');
 
         $pageCollection = $this->createMock(PageCollection::class);
@@ -665,7 +665,7 @@ class DataProcessorTest extends TestCase
     public function testGetCompanyInfoPageIdsWithEmptyValue(): void
     {
         $this->scopeConfig->method('getValue')
-            ->with('atlanticbt_llmsgenerator/settings/company_info_pages', ScopeInterface::SCOPE_STORE, 1)
+            ->with('bcmarketplace_llmsfeeder/settings/company_info_pages', ScopeInterface::SCOPE_STORE, 1)
             ->willReturn('');
 
         $result = $this->invokePrivateMethod('getCompanyInfoPageIds', [1]);
@@ -676,7 +676,7 @@ class DataProcessorTest extends TestCase
     public function testGetCompanyInfoPageIdsWithWhitespace(): void
     {
         $this->scopeConfig->method('getValue')
-            ->with('atlanticbt_llmsgenerator/settings/company_info_pages', ScopeInterface::SCOPE_STORE, 1)
+            ->with('bcmarketplace_llmsfeeder/settings/company_info_pages', ScopeInterface::SCOPE_STORE, 1)
             ->willReturn(' about-us , contact-us , privacy-policy ');
 
         $pageCollection = $this->createMock(PageCollection::class);
@@ -711,7 +711,7 @@ class DataProcessorTest extends TestCase
     public function testGetCompanyInfoPageIdsWithNotFoundIdentifiers(): void
     {
         $this->scopeConfig->method('getValue')
-            ->with('atlanticbt_llmsgenerator/settings/company_info_pages', ScopeInterface::SCOPE_STORE, 1)
+            ->with('bcmarketplace_llmsfeeder/settings/company_info_pages', ScopeInterface::SCOPE_STORE, 1)
             ->willReturn('about-us,non-existent-page,contact-us');
 
         $pageCollection = $this->createMock(PageCollection::class);
@@ -742,7 +742,7 @@ class DataProcessorTest extends TestCase
     public function testGetCompanyInfoPageIdsWithException(): void
     {
         $this->scopeConfig->method('getValue')
-            ->with('atlanticbt_llmsgenerator/settings/company_info_pages', ScopeInterface::SCOPE_STORE, 1)
+            ->with('bcmarketplace_llmsfeeder/settings/company_info_pages', ScopeInterface::SCOPE_STORE, 1)
             ->willReturn('about-us,contact-us');
 
         $this->pageCollectionFactory->method('create')
@@ -807,11 +807,11 @@ class DataProcessorTest extends TestCase
     {
         $this->cache->expects($this->once())
             ->method('clean')
-            ->with(\Zend_Cache::CLEANING_MODE_MATCHING_TAG, ['llms_generator']);
+            ->with(\Zend_Cache::CLEANING_MODE_MATCHING_TAG, ['llms_feeder']);
 
         $this->logger->expects($this->once())
             ->method('info')
-            ->with('[LLMsGenerator] Cache cleared successfully');
+            ->with('[LLMsFeeder] Cache cleared successfully');
 
         $this->dataProcessor->clearCache();
     }
@@ -823,7 +823,7 @@ class DataProcessorTest extends TestCase
 
         $this->logger->expects($this->once())
             ->method('error')
-            ->with('[LLMsGenerator] Failed to clear cache', ['error' => 'Cache error']);
+            ->with('[LLMsFeeder] Failed to clear cache', ['error' => 'Cache error']);
 
         $this->dataProcessor->clearCache();
     }

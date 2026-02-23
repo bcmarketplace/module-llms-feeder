@@ -127,9 +127,9 @@ class GeneratorTest extends TestCase
                 static $callCount = 0;
                 $callCount++;
                 if ($callCount === 1) {
-                    $this->assertStringContainsString('[LLMsGenerator] Saved LLMs content for store: default', $message);
+                    $this->assertStringContainsString('[LLMsFeeder] Saved LLMs content for store: default', $message);
                 } elseif ($callCount === 2) {
-                    $this->assertStringContainsString('[LLMsGenerator] Generation complete and files saved for 1 stores.', $message);
+                    $this->assertStringContainsString('[LLMsFeeder] Generation complete and files saved for 1 stores.', $message);
                 }
             });
 
@@ -179,11 +179,11 @@ class GeneratorTest extends TestCase
                 static $callCount = 0;
                 $callCount++;
                 if ($callCount === 1) {
-                    $this->assertStringContainsString('[LLMsGenerator] Saved LLMs content for store: store1', $message);
+                    $this->assertStringContainsString('[LLMsFeeder] Saved LLMs content for store: store1', $message);
                 } elseif ($callCount === 2) {
-                    $this->assertStringContainsString('[LLMsGenerator] Saved LLMs content for store: store2', $message);
+                    $this->assertStringContainsString('[LLMsFeeder] Saved LLMs content for store: store2', $message);
                 } elseif ($callCount === 3) {
-                    $this->assertStringContainsString('[LLMsGenerator] Generation complete and files saved for 2 stores.', $message);
+                    $this->assertStringContainsString('[LLMsFeeder] Generation complete and files saved for 2 stores.', $message);
                 }
             });
 
@@ -195,7 +195,7 @@ class GeneratorTest extends TestCase
         $this->configHelper->method('isEnabled')->willReturn(false);
 
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('LLMsGenerator Module is disabled. Skipping generation.');
+        $this->expectExceptionMessage('LLMsFeeder module is disabled. Skipping generation.');
 
         $this->generator->execute();
     }
@@ -210,7 +210,7 @@ class GeneratorTest extends TestCase
         $this->logger->expects($this->once())
             ->method('error')
             ->with(
-                $this->stringContains('[LLMsGenerator] Generation failed: Generation failed'),
+                $this->stringContains('[LLMsFeeder] Generation failed: Generation failed'),
                 $this->arrayHasKey('exception')
             );
 
@@ -234,7 +234,7 @@ class GeneratorTest extends TestCase
         $this->logger->expects($this->once())
             ->method('error')
             ->with(
-                $this->stringContains('[LLMsGenerator] Generation failed: File write failed'),
+                $this->stringContains('[LLMsFeeder] Generation failed: File write failed'),
                 $this->arrayHasKey('exception')
             );
 

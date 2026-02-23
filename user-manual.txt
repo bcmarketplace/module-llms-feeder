@@ -9,7 +9,7 @@ Developed by: BC Marketplace
 TABLE OF CONTENTS
 =================
 1. Introduction
-2. What is LLMsGenerator?
+2. What is LLMsFeeder?
 3. Installation Guide
 4. Configuration Setup
    4.1. Store Selection Feature
@@ -420,8 +420,8 @@ Technical Support:
 -----------------
 For technical support and questions:
 
-Email: support@atlanticbt.com
-Website: https://www.atlanticbt.com/
+Email: rbaako@baakoconsultingllc.com
+Website: https://baakoconsultingllc.com/
 
 Before contacting support, please have ready:
 1. Magento version

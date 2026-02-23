@@ -113,14 +113,18 @@ class Generator
     public function execute(?array $storeIds = null): void
     {
         if (!$this->configHelper->isEnabled()) {
-            throw new \RuntimeException('LLMsGenerator Module is disabled. Skipping generation.');
+            throw new \RuntimeException('LLMsFeeder module is disabled. Skipping generation.');
         }
 
         try {
             $storeContents = $this->markdownGenerator->generateMarkdown($storeIds);
-            $this->saveStoreContentsToFiles($storeContents);
+            $processedStores = $this->saveStoreContentsToFiles($storeContents);
+            $this->logger->info(sprintf(
+                '[LLMsFeeder] Generation complete and files saved for %d stores.',
+                $processedStores
+            ));
         } catch (\Throwable $e) {
-            $this->logger->error('[LLMsGenerator] Generation failed: ' . $e->getMessage(), ['exception' => $e]);
+            $this->logger->error('[LLMsFeeder] Generation failed: ' . $e->getMessage(), ['exception' => $e]);
         }
     }
 
@@ -130,9 +134,9 @@ class Generator
      * Save the generated content for each store to separate files
      *
      * @param array $storeContents Array mapping store codes to their LLMs content
-     * @return void
+     * @return int
      */
-    private function saveStoreContentsToFiles(array $storeContents): void
+    private function saveStoreContentsToFiles(array $storeContents): int
     {
         $pubPath = $this->directoryList->getPath(DirectoryList::PUB);
         $llmsBaseDir = $pubPath . DIRECTORY_SEPARATOR . 'llms';
@@ -141,6 +145,8 @@ class Generator
         if (!is_dir($llmsBaseDir)) {
             $this->ioFile->mkdir($llmsBaseDir, 0755);
         }
+
+        $processedStores = 0;
 
         foreach ($storeContents as $storeCode => $content) {
             // Create store-specific directory
@@ -152,7 +158,10 @@ class Generator
             // Save the content to llms.txt in the store directory
             $targetFile = $storeDir . DIRECTORY_SEPARATOR . ConfigHelper::LLMS_FILENAME;
             $this->ioFile->write($targetFile, $content);
-
+            $this->logger->info(sprintf('[LLMsFeeder] Saved LLMs content for store: %s', $storeCode));
+            $processedStores++;
         }
+
+        return $processedStores;
     }
 }

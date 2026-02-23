@@ -1,4 +1,4 @@
-# LLMsGenerator for Magento 2
+# LLMsFeeder for Magento 2
 
 A Magento 2 module that automatically collects store content (Products, Categories, CMS Pages, and Company information) and transforms it into a structured markdown format suitable for Large Language Models (LLMs) training and analysis.
 
@@ -26,7 +26,7 @@ A Magento 2 module that automatically collects store content (Products, Categori
 
 ## 🎯 Overview
 
-The LLMsGenerator module automatically generates comprehensive LLMs content files for your selected store. The module creates a single file and includes a custom router that serves the content directly. This is ideal for:
+The LLMsFeeder module automatically generates comprehensive LLMs content files for your selected store. The module creates a single file and includes a custom router that serves the content directly. This is ideal for:
 
 - **LLM Training**: Providing structured data for AI model training
 - **Content Analysis**: Analyzing store content and structure
@@ -78,8 +78,8 @@ The module intelligently collects data from your selected store, processes it th
 ### Method 1: Composer Installation (Recommended)
 
 ```bash
-composer require atlanticbt/module-llms-generator
-bin/magento module:enable AtlanticBT_LLMsGenerator
+composer require bcmarketplace/module-llms-feeder
+bin/magento module:enable BCMarketplace_LLMsFeeder
 bin/magento setup:upgrade
 bin/magento setup:di:compile
 bin/magento setup:static-content:deploy
@@ -90,13 +90,13 @@ bin/magento cache:clean
 
 1. **Download the module** to your Magento installation:
    ```bash
-   cd app/code/AtlanticBT/
-   git clone [repository-url] LLMsGenerator
+   cd app/code/BCMarketplace/
+   git clone [repository-url] LLMsFeeder
    ```
 
 2. **Enable the module**:
    ```bash
-   bin/magento module:enable AtlanticBT_LLMsGenerator
+   bin/magento module:enable BCMarketplace_LLMsFeeder
    ```
 
 3. **Run Magento setup**:
@@ -111,7 +111,7 @@ bin/magento cache:clean
 
 ### Admin Configuration
 
-Navigate to **Stores > Configuration > Atlantic BT > LLMs Generator** to configure the module:
+Navigate to **Stores > Configuration > BC Marketplace > LLMs Feeder** to configure the module:
 
 #### General Settings
 - **Enable Module**: Enable/disable the module for the current scope
@@ -187,7 +187,7 @@ The module generates LLMs content for your selected store using a simple and eff
 
 When using the "Generate Now" button in the admin interface:
 
-1. **Location**: Navigate to: Stores > Configuration > Atlantic BT > LLMs Generator
+1. **Location**: Navigate to: Stores > Configuration > BC Marketplace > LLMs Feeder
 2. **Action**: Click "Generate Now" button
 3. **Result**: Generates LLMs content for the selected store only
 
@@ -381,7 +381,7 @@ The module automatically manages cron job configuration:
 If you prefer manual cron management, add this to your crontab:
 
 ```bash
-# LLMs Generator - runs daily at 2 AM
+# LLMs Feeder - runs daily at 2 AM
 0 2 * * * /path/to/magento/bin/magento llms:generate
 ```
 
@@ -416,12 +416,6 @@ curl https://yourdomain.com/llms.txt
 
 ### Core Components
 
-#### Models
-- **`Generator`**: Main orchestration class that coordinates the generation process
-- **`DataProcessor`**: Handles data collection from Magento collections with caching
-- **`MarkdownGenerator`**: Transforms collected data into markdown format
-- **`SitemapProcessor`**: Processes sitemap data for company information
-
 #### Configuration
 - **`Config\Backend\Cron`**: Manages dynamic cron job configuration
 - **`Config\Source\Frequency`**: Provides frequency options for admin interface
@@ -443,7 +437,7 @@ curl https://yourdomain.com/llms.txt
 
 ### Caching Strategy
 
-- **Cache Tags**: Uses `llms_generator` cache tag for easy invalidation
+- **Cache Tags**: Uses `llms_feeder` cache tag for easy invalidation
 - **Cache Lifetime**: 1 hour default with configurable settings
 - **Cache Keys**: Store-specific cache keys for multi-store support
 - **Graceful Degradation**: Continues operation if caching fails
@@ -459,17 +453,6 @@ The module uses centralized constants to avoid hardcoded filenames:
 ## 🧪 Testing
 
 ### Running Tests
-
-```bash
-# Run all unit tests
-./vendor/bin/phpunit -c dev/tests/unit/phpunit.xml.dist app/code/AtlanticBT/LLMsGenerator
-
-# Run specific test file
-./vendor/bin/phpunit -c dev/tests/unit/phpunit.xml.dist app/code/AtlanticBT/LLMsGenerator/Test/Unit/Model/MarkdownGeneratorTest.php
-
-# Run with coverage
-./vendor/bin/phpunit -c dev/tests/unit/phpunit.xml.dist app/code/AtlanticBT/LLMsGenerator --coverage-html coverage/
-```
 
 ### Test Coverage
 
@@ -604,10 +587,10 @@ This module is licensed under the Open Software License v. 3.0 (OSL-3.0).
 
 For support and questions:
 
-- **Email**: support@atlanticbt.com
-- **Website**: https://www.atlanticbt.com/
+- **Email**: rbaako@baakoconsultingllc.com
+- **Website**: https://baakoconsultingllc.com/
 - **Issues**: Please use the GitHub issues page for bug reports
 
 ---
 
-**Developed by Atlantic BT** - Empowering businesses with innovative Magento solutions.
+**Developed by Raphael Baako** - Empowering businesses with innovative Magento solutions.

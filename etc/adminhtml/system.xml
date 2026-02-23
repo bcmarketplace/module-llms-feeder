@@ -5,14 +5,14 @@
             <label>BC Marketplace</label>
         </tab>
         <section id="bcmarketplace_llmsfeeder" translate="label" type="text" sortOrder="999" showInDefault="1" showInWebsite="1" showInStore="1">
-            <label>llms.txt Creator</label>
+            <label>LLMs Feeder</label>
             <tab>bcmarketplace</tab>
             <resource>BCMarketplace_LLMsFeeder::config</resource>
             <group id="settings" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>llms.txt Creator - Settings</label>
+                <label>LLMs Feeder - Settings</label>
 
                 <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Enable LLMs Generator</label>
+                    <label>Enable LLMs Feeder</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
 
