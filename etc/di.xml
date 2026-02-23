@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="llms_generate" xsi:type="object">BCMarketplace\LLMsFeeder\Console\Command\GenerateCommand</item>
+            </argument>
+        </arguments>
+    </type>
+    
+    <!-- Register custom router for llms.txt requests with high priority -->
+    <type name="Magento\Framework\App\RouterList">
+        <arguments>
+            <argument name="routers" xsi:type="array">
+                <item name="llms_router" xsi:type="object">BCMarketplace\LLMsFeeder\Controller\Router</item>
+            </argument>
+        </arguments>
+    </type>
+    
+    <!-- Plugin for front controller to intercept llms.txt requests -->
+    <type name="Magento\Framework\App\FrontController">
+        <plugin name="llms_front_controller_plugin" type="BCMarketplace\LLMsFeeder\Plugin\FrontControllerPlugin" sortOrder="10"/>
+    </type>
+</config>

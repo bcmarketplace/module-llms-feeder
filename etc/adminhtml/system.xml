@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="bcmarketplace" translate="label" sortOrder="1000">
+            <label>BC Marketplace</label>
+        </tab>
+        <section id="bcmarketplace_llmsfeeder" translate="label" type="text" sortOrder="999" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>LLMs Feeder</label>
+            <tab>bcmarketplace</tab>
+            <resource>BCMarketplace_LLMsFeeder::config</resource>
+            <group id="settings" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>LLMs Feeder - Settings</label>
+
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable LLMs Feeder</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="site_title" translate="label" type="text" sortOrder="14" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Site Title</label>
+                    <comment>The main title of the website that will be included in the generated llms.txt file.</comment>
+                </field>
+
+                <field id="site_description" translate="label" type="textarea" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Site Description</label>
+                    <comment>A brief, high-level description of the company and website. This will be used in the generated markdown.</comment>
+                </field>
+
+                <field id="llm_instruction" translate="label" type="textarea" sortOrder="26" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>LLM Instructions</label>
+                    <comment>Define essential details such as important notes, brand voice, tone, target audience, and specific directives to guide LLM.</comment>
+                </field>
+
+                <field id="company_info_pages" translate="label" type="multiselect" sortOrder="27" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Company Information Pages</label>
+                    <source_model>Magento\Cms\Model\Config\Source\Page</source_model>
+                    <frontend_model>BCMarketplace\LLMsFeeder\Block\Adminhtml\System\Config\CompanyInfoPages</frontend_model>
+                    <comment>Select CMS pages that describe the company (e.g., 'About Us', 'Contact Us'). This field is disabled when a sitemap is detected.</comment>
+                </field>
+
+                <field id="content_types" translate="label" type="multiselect" sortOrder="28" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Content Types</label>
+                    <source_model>BCMarketplace\LLMsFeeder\Model\Config\Source\ContentTypes</source_model>
+                    <comment>Select which content types to include in the llms.txt file. Only includes Products and Categories if no options are selected</comment>
+                </field>
+
+                <field id="custom_file_directives" translate="label" type="textarea" sortOrder="29" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Custom File Directives</label>
+                    <comment>Use this field to add optional, custom content to the end of the llms.txt file. This can include disclaimers, links to specific terms of service, or any other final instructions for the LLM.</comment>
+                </field>
+
+                <field id="frequency" translate="label" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Automatic File Generation</label>
+                    <source_model>BCMarketplace\LLMsFeeder\Model\Config\Source\Frequency</source_model>
+                    <backend_model>BCMarketplace\LLMsFeeder\Model\Config\Backend\Cron</backend_model>
+                </field>
+
+                <field id="generation_time" translate="label" type="time" sortOrder="41" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Generation Time</label>
+                    <comment>Select the time of day when the file should be generated (24-hour format).</comment>
+                </field>
+
+                <field id="selected_store" translate="label" type="select" sortOrder="44" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Store for LLMs Generation</label>
+                    <source_model>BCMarketplace\LLMsFeeder\Model\Config\Source\Store</source_model>
+                    <comment>Select which store's content should be used for generating the llms.txt file. This setting is only available at the default scope.</comment>
+                </field>
+
+                <field id="file_status" translate="label" type="link" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Generated File Status</label>
+                    <frontend_model>BCMarketplace\LLMsFeeder\Block\Adminhtml\System\Config\FileStatus</frontend_model>
+                </field>
+
+                <field id="generate_now" translate="label" type="button" sortOrder="55" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Generate llms.txt File</label>
+                    <frontend_model>BCMarketplace\LLMsFeeder\Block\Adminhtml\System\Config\GenerateButton</frontend_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
+
+

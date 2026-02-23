@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:UrlRewrite/etc/url_rewrite.xsd">
+    <rule id="llms_txt_rewrite">
+        <data>
+            <from>^llms\.txt$</from>
+            <to>llms/index/index</to>
+        </data>
+    </rule>
+</config>

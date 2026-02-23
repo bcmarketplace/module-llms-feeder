@@ -1,0 +1,441 @@
+BC MARKETPLACE LLMs FEEDER MODULE
+USER MANUAL FOR MAGENTO 2 ADMINISTRATORS
+==========================================
+
+Version: 1.0.0
+Last Updated: December 2026
+Developed by: Raphael Baako
+
+TABLE OF CONTENTS
+=================
+1. Introduction
+2. What is LLMsFeeder?
+3. Installation Guide
+4. Configuration Setup
+   4.1. Store Selection Feature
+5. Generating LLMs Content
+   5.1. Custom Router Implementation
+6. File Management
+7. Multi-Store Configuration
+8. Troubleshooting
+9. Support Information
+
+1. INTRODUCTION
+===============
+
+Welcome to the BC Marketplace LLMsFeeder Module for Magento 2. This comprehensive guide will help you understand, install, configure, and use the module to generate structured content files for Large Language Models (LLMs) training and analysis.
+
+The module automatically collects your store's content (products, categories, CMS pages, and company information) and transforms it into a clean, structured format that can be used for AI model training, content analysis, and documentation purposes.
+
+2. WHAT IS LLMsFeeder?
+=========================
+
+The LLMsFeeder module is designed to:
+
+• Automatically collect store content from your selected store
+• Generate structured markdown files for the selected store
+• Provide direct content serving without complex routing
+• Support single store focus for simplified management
+• Enable both manual and automated content generation
+• Offer focused content generation for targeted updates
+
+Key Benefits:
+- Save time on manual content collection
+- Ensure consistent content formatting
+- Support AI/ML training initiatives
+- Improve content analysis capabilities
+- Simplified single file management
+
+3. INSTALLATION GUIDE
+=====================
+
+Prerequisites:
+- Magento 2.4.7 or higher
+- PHP 8.1, 8.2, or 8.3
+- Admin access to your Magento installation
+
+Step 1: Install the Module
+--------------------------
+If you received the module as a package, follow these steps:
+
+1. Upload the module files to: app/code/BCMarketplace/LLMsFeeder/
+2. Open your terminal/command line
+3. Navigate to your Magento root directory
+4. Run the following commands:
+
+   bin/magento module:enable BCMarketplace_LLMsFeeder
+   bin/magento setup:upgrade
+   bin/magento setup:di:compile
+   bin/magento setup:static-content:deploy
+   bin/magento cache:clean
+
+Step 2: Verify Installation
+---------------------------
+1. Go to Admin Panel > System > Tools > Web Setup Wizard > Module Manager
+2. Search for "BCMarketplace_LLMsFeeder"
+3. Verify the module is listed and enabled
+
+4. CONFIGURATION SETUP
+======================
+
+Accessing Configuration:
+1. Log into your Magento Admin Panel
+2. Navigate to: Stores > Configuration > BC Marketplace > LLMs Feeder
+
+General Settings:
+-----------------
+Enable Module:
+- Select "Yes" to enable the module for the current scope
+- Select "No" to disable the module
+- Note: This setting can be configured per store/website
+
+Store for LLMs Generation:
+- Select which store's content should be used for generating the llms.txt file
+- Available only at the default scope (global configuration)
+- Choose from dropdown list of all available stores
+- When configured, only the selected store's content will be processed
+- If not configured, the module will process all stores (legacy behavior)
+
+Site Description:
+- Enter a general description of your company or website
+- This description will be included in the generated LLMs content
+- Example: "Leading e-commerce retailer specializing in electronics and home goods"
+
+LLM Instruction:
+- Define essential details such as important notes, brand voice, tone, target audience, and specific directives to guide LLM
+- This text will be included at the beginning of the generated content
+- Example: "This is a premium electronics retailer. Focus on technical specifications and customer benefits. Use a professional, knowledgeable tone."
+
+Content Types:
+- Multiselect field containing "CMS Page", "Product", "Category"
+- If all are selected, then CMS pages, products, and categories are included in llms.txt
+- If only specific types are selected, only those types will be included
+- Example: Select only "Product" and "Category" to exclude CMS pages
+
+Custom File Directives:
+- Optional textarea field to add custom content to the end of the llms.txt file
+- Can include disclaimers, links to terms of service, or other final instructions for the LLM
+- Example: "For more information, visit our terms of service at https://example.com/terms"
+
+Company Info Pages:
+- Manually specify CMS page identifiers for company information
+- Only used when sitemap is not available
+- Enter page IDs separated by commas (e.g., "2,5,8")
+- Leave empty if you have a sitemap.xml file
+
+Generation Settings:
+--------------------
+Frequency:
+- Daily: Generate content every day
+- Weekly: Generate content once per week
+- Monthly: Generate content once per month
+
+Generation Time:
+- Set the specific time for automatic generation
+- Use 24-hour format (e.g., "02:00" for 2:00 AM)
+- Recommended: Set during low-traffic hours
+
+File Status:
+- Shows current status of generated files for the selected store
+- With Store Selection: Displays "✓ File exists for selected store: [Store Name]" if file is present
+- With Store Selection: Shows "✗ File has not been generated yet for selected store: [Store Name]" if no file exists
+- Provides direct access links to the selected store's content
+- Without Store Selection (Legacy): Shows status for all stores or current scope
+
+Scope-Based Configuration:
+-------------------------
+The module supports different configuration scopes:
+
+Default Scope (Global):
+- Applies to all stores unless overridden
+- Use for general settings that apply to all stores
+
+Website Scope:
+- Applies to all stores under a specific website
+- Navigate to: Stores > All Stores > [Website Name] > Configuration
+
+Store Scope:
+- Applies to a specific store only
+- Navigate to: Stores > All Stores > [Store Name] > Configuration
+
+4.1. STORE SELECTION FEATURE
+============================
+
+The module includes a Store Selection feature that allows you to focus on a single store's content.
+
+Key Benefits:
+- Focused content generation for your primary store
+- Faster generation and smaller file sizes
+- Simplified file management (single file)
+- Perfect for LLM training focused on your store content
+
+How to Configure:
+1. Navigate to: Stores > Configuration > BC Marketplace > LLMs Feeder
+2. Make sure you're in the "Default" scope (not website or store scope)
+3. In the "Store for LLMs Generation" dropdown, select your desired store
+4. Save the configuration
+
+How It Works:
+- When configured, only the selected store's content will be processed
+- The file status will show information for the selected store
+- The "View File" link will point to the selected store's content
+- Access the content via https://yourdomain.com/llms.txt (serves selected store's content)
+
+Fallback:
+- If no store is selected, the module will use the default store
+- This ensures the module always has a store to process
+
+5. GENERATING LLMs CONTENT
+==========================
+
+There are two ways to generate LLMs content: through the admin interface and via command line.
+
+Method 1: Admin Interface Generation
+-----------------------------------
+1. Navigate to: Stores > Configuration > BC Marketplace > LLMs Feeder
+2. Configure your settings as needed
+3. Click "Generate Now" button
+4. The module will generate content for the selected store only
+
+5.1. CUSTOM ROUTER IMPLEMENTATION
+==================================
+
+The module includes a custom router that automatically handles requests to `/llms.txt` without requiring web server configuration. This eliminates the need for Apache or Nginx configuration changes.
+
+How It Works:
+-------------
+1. **Automatic Interception**: The custom router intercepts all requests to `/llms.txt`
+2. **Content Serving**: Serves the content from the selected store configuration
+3. **Direct Access**: Provides direct access to the selected store's LLMs content
+4. **Fallback Support**: Automatically falls back to default store if selected store doesn't exist
+
+Benefits:
+---------
+- **No Server Configuration**: Works out of the box without Apache/Nginx changes
+- **Simple Access**: Direct access to your selected store's content
+- **Seamless Integration**: Fully integrated with Magento's routing system
+- **Performance Optimized**: Includes proper caching and error handling
+
+Access Methods:
+--------------
+Once the module is installed and configured, you can access LLMs content through:
+
+1. **Direct Access**: `https://yourdomain.com/llms.txt`
+
+Method 2: Command Line Generation
+--------------------------------
+Open your terminal/command line and navigate to your Magento root directory.
+
+Basic Commands:
+--------------
+Generate for the selected store:
+   bin/magento llms:generate
+
+Advanced Options:
+----------------
+Force generation (even if module is disabled):
+   bin/magento llms:generate --force
+
+Generate for specific stores with force:
+   bin/magento llms:generate --stores="1,2" --force
+
+Understanding Store IDs:
+-----------------------
+To find store IDs:
+1. Go to Admin Panel > Stores > All Stores
+2. Note the Store ID column
+3. Use these IDs in the --stores parameter
+
+Example:
+- Store "Main Store" has ID 1
+- Store "UK Store" has ID 2
+- Command: bin/magento llms:generate --stores="1,2"
+
+6. FILE MANAGEMENT
+==================
+
+Generated Files Location:
+------------------------
+The module creates files in the following structure:
+
+pub/llms/
+├── default/
+│   └── llms.txt
+├── store1/
+│   └── llms.txt
+├── store2/
+│   └── llms.txt
+└── llms.txt (renderer file)
+
+File Types:
+-----------
+1. Store-Specific Files (pub/llms/{store_code}/llms.txt):
+   - Contains content specific to each store
+   - Includes products, categories, CMS pages, and company info
+   - Formatted in clean markdown structure
+
+2. LLMs Renderer File (pub/llms.txt):
+   - PHP file that dynamically serves content
+   - Automatically detects store context
+   - Provides fallback to default store
+
+Accessing Generated Content:
+---------------------------
+Once files are generated, you can access them via:
+
+1. Direct File Access:
+   https://yourdomain.com/llms.txt
+
+2. Store-Specific Access:
+   https://yourdomain.com/store1/llms.txt
+   https://yourdomain.com/store2/llms.txt
+
+3. Via Query Parameter:
+   https://yourdomain.com/llms.txt?store=store1
+
+File Content Structure:
+----------------------
+Each llms.txt file contains:
+
+# [Company Name]
+
+> [Company Description]
+
+## Company
+- [About Us](URL) about company
+- [Contact](URL) contact information
+
+## CMS Pages
+- [Home](URL)
+- [Privacy Policy](URL)
+
+## Categories
+- [Electronics](URL) : Category meta description
+- [Clothing](URL) : Category meta description
+
+## Products Resources
+- [Product Name](URL) : Product meta description
+- [Another Product](URL) : Product meta description
+
+8. MULTI-STORE CONFIGURATION
+============================
+
+The LLMsFeeder module fully supports multi-store Magento installations.
+
+Store-Specific Settings:
+-----------------------
+Each store can have different configurations:
+
+1. Enable/disable the module per store
+2. Set different generation frequencies
+3. Configure store-specific site descriptions
+4. Set different generation times
+
+Scope-Based Generation:
+----------------------
+The module automatically adapts to your current admin scope:
+
+Default Scope:
+- Generates content for all stores
+- Shows "Switch to Website or Store scope to view the file link" message
+- Useful for global content generation
+
+Website Scope:
+- Generates content for all stores under that website
+- Shows file links for each store in the website
+- Useful for regional content management
+
+Store Scope:
+- Generates content for that specific store only
+- Shows direct file link for that store
+- Useful for store-specific content updates
+
+File Status Display:
+-------------------
+The File Status field shows different information based on scope:
+
+Default Scope:
+- Checks if files exist in any store directory
+- Shows "✓ File exists" if any store has generated files
+- Displays helpful message to switch to store/website scope
+
+Store/Website Scope:
+- Checks if file exists for the current store
+- Shows "✓ File exists" with direct file link
+- Shows "✗ File has not been generated yet" if no file exists
+
+8. TROUBLESHOOTING
+==================
+
+Common Issues and Solutions:
+
+Issue: "File has not been generated yet" message
+-----------------------------------------------
+Solution:
+1. Check if module is enabled for current scope
+2. Verify pub/ directory is writable
+3. Try manual generation: bin/magento llms:generate
+4. Check logs: var/log/system.log
+
+Issue: Empty or incomplete content
+---------------------------------
+Solution:
+1. Verify stores are active and enabled
+2. Check if products are visible in catalog
+3. Ensure categories are active
+4. Verify CMS pages are active
+5. Check if module is enabled for specific store scope
+
+Issue: Cron job not running
+--------------------------
+Solution:
+1. Verify Magento cron is running: bin/magento cron:run
+2. Check cron configuration in admin
+3. Clear cache: bin/magento cache:clean
+4. Check cron logs: var/log/cron.log
+
+
+
+
+Log Files to Check:
+------------------
+- var/log/system.log - General system logs
+- var/log/exception.log - Exception details
+- var/log/cron.log - Cron job execution logs
+
+9. SUPPORT INFORMATION
+======================
+
+Technical Support:
+-----------------
+For technical support and questions:
+
+Email: rbaako@baakoconsultingllc.com
+Website: https://baakoconsultingllc.com/
+
+Before contacting support, please have ready:
+1. Magento version
+2. PHP version
+3. Module version
+4. Error messages or logs
+5. Steps to reproduce the issue
+
+Documentation Updates:
+---------------------
+This user manual is updated regularly. Check for the latest version in your module directory.
+
+Module Information:
+------------------
+Module Name: BCMarketplace_LLMsFeeder
+Version: 1.0.0
+Compatibility: Magento 2.4.7+
+License: Open Software License v. 3.0 (OSL-3.0)
+
+Developed by Raphael Baako - Empowering businesses with innovative Magento solutions.
+
+---
+
+END OF USER MANUAL
+==================
+
+This manual covers the essential information needed to install, configure, and use the BC Marketplace LLMsFeeder module. For additional technical details, please refer to the README.md file included with the module.
