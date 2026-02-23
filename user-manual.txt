@@ -2,9 +2,9 @@ BC MARKETPLACE LLMs FEEDER MODULE
 USER MANUAL FOR MAGENTO 2 ADMINISTRATORS
 ==========================================
 
-Version: 1.1.0
-Last Updated: December 2024
-Developed by: BC Marketplace
+Version: 1.0.0
+Last Updated: December 2026
+Developed by: Raphael Baako
 
 TABLE OF CONTENTS
 =================
@@ -157,16 +157,6 @@ Website Scope:
 Store Scope:
 - Applies to a specific store only
 - Navigate to: Stores > All Stores > [Store Name] > Configuration
-
-
-
-
-
-
-
-
-
-
 
 4.1. STORE SELECTION FEATURE
 ============================
@@ -441,7 +431,7 @@ Version: 1.0.0
 Compatibility: Magento 2.4.7+
 License: Open Software License v. 3.0 (OSL-3.0)
 
-Developed by BC Marketplace - Empowering businesses with innovative Magento solutions.
+Developed by Raphael Baako - Empowering businesses with innovative Magento solutions.
 
 ---
 
